@@ -1,4 +1,4 @@
-# APEX: An AI-Powered Pulmonary EXtended Aging Framework for Disease Characterization Using Chest Radiographs
+# APEX: An AI-Powered Pulmonary EXtended Aging Framework for Early Disease Detection and Characterization Using Chest Radiographs
 
 ## Introduction
 
