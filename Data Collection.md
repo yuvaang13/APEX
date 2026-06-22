@@ -51,8 +51,7 @@ APEX/
 │   ├── raw_archives/
 │   │   ├── images_001.tar.gz
 │   │   ├── images_002.tar.gz
-│   │   ├── images_003.tar.gz
-│   │   └── images_004.tar.gz
+│   │  
 │   │
 │   ├── extracted/
 │   │
@@ -135,7 +134,7 @@ This approach reduces storage requirements while enabling iterative development.
 
 - [x] Created project directory structure
 - [x] Downloaded NIH metadata
-- [x] Downloaded image archives 001–004
+- [x] Downloaded image archives 001–002
 
 ### In Progress
 
