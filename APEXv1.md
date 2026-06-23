@@ -33,3 +33,30 @@ NIH ChestX-ray14 dataset (subset used for v1)
   - Finding Labels (not used in v1 training directly)
 
 ### Structure
+sample_images/
+00000001_000.png
+00000002_001.png
+...
+
+subsets/
+lung_age_sample.csv
+
+
+### Preprocessing
+- Images resized to 224×224
+- Normalized to [0, 1]
+- Train/test split: 80/20 random split
+- Age filtered to valid range (0–100)
+
+---
+
+## Model Architecture
+
+### Backbone
+- ResNet18 (pretrained on ImageNet)
+
+### Modification
+- Final fully connected layer replaced with:
+
+```python
+nn.Linear(in_features, 1)
