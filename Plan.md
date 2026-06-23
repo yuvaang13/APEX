@@ -38,7 +38,7 @@ Rather than predicting disease labels directly, APEX introduces:
 
 ---
 
-# Phase 2 — Dataset Construction
+# Phase 2 — Dataset Construction (COMPLETED / IN PROGRESS)
 ### Goal: Create modeling-ready dataset
 
 ### Tasks:
@@ -56,7 +56,7 @@ Rather than predicting disease labels directly, APEX introduces:
 
 ---
 
-# Phase 3 — Baseline Model (Lung Age Prediction)
+# Phase 3 — Baseline Model (Lung Age Prediction) (COMPLETED / IN PROGRESS)
 ### Goal: Learn normal pulmonary aging
 
 ### Model:
