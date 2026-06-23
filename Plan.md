@@ -1,5 +1,5 @@
 # APEX Project Plan
-## AI-Powered Pulmonary EXtended Aging Framework for Lung Disease Characterization
+## AI-Powered Pulmonary EXtended Aging Framework for Early Lung Disease Characterization and Detection
 
 ---
 
