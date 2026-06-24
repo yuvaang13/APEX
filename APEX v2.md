@@ -169,11 +169,8 @@ The model demonstrated the ability to learn age-related pulmonary features direc
 
 ## Predicted vs Actual Age
 
-> Placeholder for final figure.
+<img width="771" height="552" alt="Screenshot 2026-06-24 at 3 29 01 PM" src="https://github.com/user-attachments/assets/fa14a3ad-93e4-42a3-8180-20e9e0577a16" />
 
-![APEX v2 Predicted vs Actual Age](images/apexv2_scatter_plot.png)
-
-*Figure 1. Predicted pulmonary age versus chronological age on the held-out test set.*
 
 ---
 
