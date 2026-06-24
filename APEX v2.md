@@ -10,7 +10,7 @@ APEX v2 is a deep learning framework designed to estimate pulmonary biological a
 The core metric introduced by APEX is the **Pulmonary Age Gap (PAG)**:
 
 \[
-PAG = Predicted\ Pulmonary\ Age - Chronological\ Age
+PAG = Predicted Pulmonary Age - Chronological Age
 \]
 
 A positive PAG may indicate accelerated pulmonary aging, while a negative PAG may indicate a younger-than-expected pulmonary profile.
