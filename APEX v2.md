@@ -224,7 +224,7 @@ Use pulmonary age estimation as an early screening biomarker for detecting subcl
 
 ---
 
-## Repository Structure
+## Folder Structure
 
 ```text
 APEXv2/
