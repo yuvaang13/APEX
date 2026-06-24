@@ -52,3 +52,5 @@ Initial experiments will utilize the NIH ChestX-ray14 dataset. A subset of image
 ## Conclusion
 
 APEX reframes chest X-ray analysis from a classification problem into a biological aging modeling problem. By learning how lungs age under normal conditions and measuring deviations from this trajectory, we aim to develop a more interpretable and clinically meaningful framework for early disease detection and characterization.
+
+(Not intended for practical usage)
