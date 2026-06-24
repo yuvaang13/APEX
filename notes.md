@@ -1,6 +1,13 @@
 # Notes for APEX
-
+## APEXv1
 -starting with APEX sample dataset (3000 pics)               
 -Test MAE for APEXv1 is Test MAE: 20.624169057210285               
 -APEXv1 complete!              
--very barebone version of APEX
+-very barebone version of APEX                           
+ ## APEXv2
+-moved on to more advanced dataset of about 17,000 pics
+-25 epochs                  
+-Test MAE: 4.41836487935937                         
+-PAG Mean: 1.4452438                                   
+-PAG Std: 5.521217
+APEXv2 complete!
