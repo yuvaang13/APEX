@@ -5,7 +5,7 @@
 -APEXv1 complete!              
 -very barebone version of APEX                           
  ## APEXv2
--moved on to more advanced dataset of about 17,000 pics
+-moved on to more advanced dataset of about 45,000 pics                      
 -25 epochs                  
 -Test MAE: 4.41836487935937                         
 -PAG Mean: 1.4452438                                   
