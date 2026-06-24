@@ -1,175 +1,260 @@
-# APEX v2: A Deep Learning Pipeline for Pulmonary Age Estimation and Dataset-Driven Biological Age Gap Modeling
-
-## Abstract
-
-APEX v2 is a deep learning pipeline designed to estimate pulmonary age from chest X-ray images using a supervised regression model trained on the NIH ChestX-ray14 dataset. The system is built as a reproducible end-to-end workflow that includes dataset construction, preprocessing, training, and evaluation. A key component of APEX v2 is the computation of the Pulmonary Age Gap (PAG), defined as the difference between predicted age and chronological age. This document describes the full system architecture, dataset pipeline, and training methodology used in APEX v2.
+# APEX v2
+## AI-Powered Estimation of Pulmonary Extended Aging for Early Detection of Lung Disease
 
 ---
 
-## 1. Introduction
+## Overview
 
-APEX v2 is a machine learning system designed to learn age-related structure in chest X-ray images. The system is built as a modular pipeline consisting of dataset construction, image indexing, supervised regression training, and evaluation.
+APEX v2 is a deep learning framework designed to estimate pulmonary biological age directly from chest radiographs. The model learns age-related pulmonary patterns from healthy chest X-rays and generates a predicted pulmonary age for each patient.
 
-The goal of APEX v2 is not classification or diagnosis, but continuous age estimation from imaging data, followed by analysis of prediction deviation.
+The core metric introduced by APEX is the **Pulmonary Age Gap (PAG)**:
 
----
+\[
+PAG = Predicted\ Pulmonary\ Age - Chronological\ Age
+\]
 
-## 2. System Overview
-
-APEX v2 is composed of four main components:
-
-1. Dataset Construction Pipeline  
-2. Image Indexing and Path Mapping System  
-3. Deep Learning Regression Model  
-4. Evaluation and Pulmonary Age Gap Computation
-
-Each component is designed to be reproducible across local (Mac) and cloud (Google Colab) environments.
+A positive PAG may indicate accelerated pulmonary aging, while a negative PAG may indicate a younger-than-expected pulmonary profile.
 
 ---
 
-## 3. Dataset Construction
+## Motivation
 
-### 3.1 Source Data
+Many lung diseases develop gradually over time and may not be easily identifiable during their earliest stages. Rather than directly classifying disease, APEX approaches the problem through biological aging.
 
-APEX v2 uses the NIH ChestX-ray14 dataset, consisting of multiple image archives (001–005) and a metadata CSV file containing image labels and patient ages.
+The central hypothesis is:
 
-### 3.2 Preprocessing Steps
+> Patients with pulmonary abnormalities exhibit accelerated pulmonary aging that can be quantified using chest radiographs.
 
-The dataset construction pipeline performs the following operations:
-
-- Extraction of image archives into structured folders
-- Mapping of image filenames to absolute file paths
-- Joining image paths with metadata entries
-- Removal of missing or unmatched records
-- Filtering of “No Finding” (healthy) cases
-- Age filtering to retain values between 18 and 90
-
-### 3.3 Final Dataset Size
-
-After preprocessing, the dataset is split into:
-
-- Training set
-- Validation set
-- Test set
-
-All splits are derived exclusively from the filtered healthy cohort.
+By first learning normal aging patterns from healthy individuals, APEX establishes a baseline from which abnormal aging signatures can be detected.
 
 ---
 
-## 4. Data Splitting Strategy
+## Dataset
 
-The dataset is divided using a randomized stratification strategy:
+### Source
 
-- 70% Training
-- 15% Validation
-- 15% Testing
+NIH ChestX-ray14 Dataset
 
-Splits are performed on the cleaned dataset after filtering and validation.
+### Training Population
 
-Each sample in the dataset includes:
+Only healthy patients labeled:
 
-- Image Index
-- Patient Age
-- Full image file path
+```text
+No Finding
+```
 
----
+were included in model development.
 
-## 5. Model Architecture
+### Dataset Processing Pipeline
 
-APEX v2 uses DenseNet121 as the base convolutional neural network.
+1. Load NIH metadata.
+2. Index all available chest X-ray images.
+3. Match metadata records to image files.
+4. Filter for healthy patients only.
+5. Filter ages between 18 and 90 years.
+6. Create train, validation, and test splits.
 
-### 5.1 Modifications
+### Final Dataset Statistics
 
-The original classification head is replaced with a regression layer:
+| Split | Samples |
+|---------|---------:|
+| Train | 17,086 |
+| Validation | 3,661 |
+| Test | 3,662 |
+| Total Healthy Samples | 24,409 |
 
-- Input: 1024 features (DenseNet embedding)
-- Output: 1 scalar (predicted age)
+### Available Images
 
-### 5.2 Loss Function
+NIH image archives used:
 
-The model is trained using Mean Absolute Error (MAE):
+```text
+images_001
+images_002
+images_003
+images_004
+images_005
+```
 
-MAE = |y_pred − y_true|
+Total indexed images:
 
----
-
-## 6. Training Procedure
-
-The model is trained using the following configuration:
-
-- Optimizer: AdamW
-- Learning Rate: 1e-4
-- Batch Size: 32
-- Input Resolution: 224 × 224
-- Epochs: configurable (typically 20–40)
-
-Training is performed on GPU when available.
-
----
-
-## 7. Pulmonary Age Gap (PAG)
-
-APEX v2 introduces a derived metric:
-
-PAG = Predicted Age − Actual Age
-
-PAG is computed for each sample in the test set.
-
-### 7.1 Interpretation
-
-- PAG > 0 → model predicts older pulmonary appearance
-- PAG < 0 → model predicts younger pulmonary appearance
-- PAG ≈ 0 → alignment with expected age pattern
+```text
+44,999
+```
 
 ---
 
-## 8. Evaluation
+## Model Architecture
 
-Model performance is evaluated using:
+### Backbone
 
-- Mean Absolute Error (MAE)
-- Prediction vs Actual correlation
-- Distribution of PAG values
+DenseNet121
 
-Evaluation is performed on a held-out test set that was not used during training or validation.
+### Initialization
+
+ImageNet pretrained weights
+
+### Input
+
+```text
+224 × 224 RGB chest radiograph
+```
+
+### Output
+
+```text
+Predicted Pulmonary Age (years)
+```
+
+### Loss Function
+
+Mean Absolute Error (L1 Loss)
+
+### Optimizer
+
+AdamW
+
+Learning Rate:
+
+```text
+1e-4
+```
+
+### Training Duration
+
+```text
+25 epochs
+```
+
+### Hardware
+
+Kaggle GPU Environment
 
 ---
 
-## 9. Implementation Details
+## APEX Framework
 
-APEX v2 is implemented using:
-
-- Python
-- PyTorch
-- Pandas
-- Scikit-learn
-- Google Colab (training environment)
-- Local preprocessing environment (MacOS)
-
-The system is designed for reproducibility across local and cloud environments using standardized CSV-based dataset indexing.
-
----
-
-## 10. Limitations
-
-- Dataset limited to NIH ChestX-ray14
-- Age labels may contain noise
-- Model does not incorporate clinical metadata beyond age
-- Single architecture (DenseNet121) used for baseline results
+```text
+Chest X-Ray
+      ↓
+DenseNet121
+      ↓
+Predicted Pulmonary Age
+      ↓
+Compare Against Actual Age
+      ↓
+Pulmonary Age Gap (PAG)
+      ↓
+Potential Indicator of Accelerated Pulmonary Aging
+```
 
 ---
 
-## 11. Conclusion
+## Results
 
-APEX v2 is a structured machine learning pipeline for pulmonary age estimation using chest X-ray imaging. The system integrates dataset construction, deep learning regression, and a derived metric (PAG) into a unified workflow. It is designed as a reproducible framework for future extensions in medical imaging-based age modeling.
+### Test Performance
+
+| Metric | Value |
+|---------|---------:|
+| Test MAE | 4.42 Years |
+| PAG Mean | +1.45 Years |
+| PAG Standard Deviation | 5.52 Years |
+
+### Interpretation
+
+APEX v2 achieved a mean absolute error of approximately 4.42 years on a held-out test set of healthy chest radiographs.
+
+The model demonstrated the ability to learn age-related pulmonary features directly from imaging data and generate biologically meaningful pulmonary age estimates.
 
 ---
 
-## 12. Future Improvements
+## Predicted vs Actual Age
 
-Planned extensions to APEX v2 include:
+> Placeholder for final figure.
 
-- Multi-dataset training support
-- Architecture comparison (ResNet, EfficientNet)
-- Uncertainty estimation in age predictions
-- Improved stratified sampling for age distribution balancing
+![APEX v2 Predicted vs Actual Age](images/apexv2_scatter_plot.png)
+
+*Figure 1. Predicted pulmonary age versus chronological age on the held-out test set.*
+
+---
+
+## Pulmonary Age Gap (PAG)
+
+APEX introduces the Pulmonary Age Gap as a quantitative biomarker:
+
+\[
+PAG = PredictedAge - ActualAge
+\]
+
+Examples:
+
+| Actual Age | Predicted Age | PAG |
+|------------|--------------|-----|
+| 50 | 51 | +1 |
+| 50 | 62 | +12 |
+| 50 | 45 | -5 |
+
+Potential interpretation:
+
+- Positive PAG → accelerated pulmonary aging
+- Near-zero PAG → expected pulmonary aging
+- Negative PAG → younger pulmonary profile
+
+---
+
+## Future Work
+
+### APEX v2.1
+
+Evaluate PAG across pulmonary disease cohorts:
+
+- Fibrosis
+- Emphysema
+- Atelectasis
+- Effusion
+- Infiltration
+- Mass
+- Nodule
+- Consolidation
+- Pneumonia
+
+### APEX v3
+
+Develop disease-specific pulmonary aging signatures and risk prediction models.
+
+### APEX Clinical Vision
+
+Use pulmonary age estimation as an early screening biomarker for detecting subclinical lung disease before significant symptoms emerge.
+
+---
+
+## Repository Structure
+
+```text
+APEXv2/
+├── splits/
+│   ├── train.csv
+│   ├── val.csv
+│   └── test.csv
+│
+├── raw_image_archives/
+│   ├── images_001/
+│   ├── images_002/
+│   ├── images_003/
+│   ├── images_004/
+│   └── images_005/
+│
+├── notebooks/
+├── models/
+└── results/
+```
+
+---
+
+## Citation
+
+```text
+APEX v2: AI-Powered Estimation of Pulmonary Extended Aging
+for Early Detection of Lung Disease.
+
+Developed by Yuvaan G.
+```
