@@ -3,218 +3,420 @@
 
 ---
 
-## 1. Project Overview
+# 1. Project Overview
 
-APEX is a machine learning research project that reframes chest X-ray analysis as a **biological aging problem** instead of a classification problem. The goal is to learn how lungs age normally and then measure how disease distorts that aging process.
+APEX (AI-Powered Pulmonary EXtended Aging Framework) is a medical AI research project that reframes chest X-ray analysis as a biological aging problem rather than a traditional disease classification problem.
 
-Rather than predicting disease labels directly, APEX introduces:
-- **Pulmonary Age Gap (PAG)** → overall lung health deviation
-- **Disease-Specific Aging Signatures (DAS)** → disease pattern differences
-- **Regional Pulmonary Aging Maps (RPAM)** → spatial disease localization
+Instead of directly predicting disease labels, APEX learns normal pulmonary aging patterns from chest radiographs and measures how disease alters those patterns. The central hypothesis is that lung diseases accelerate or distort biological aging signatures that can be quantified and analyzed through deep learning.
 
----
+The framework introduces three primary research contributions:
 
-## 2. Main Objective
-
-> Can we model normal lung aging from chest X-rays and use deviations from that model to detect and characterize disease earlier and more interpretably than standard classification systems?
+1. **Pulmonary Age Gap (PAG)** — a continuous biomarker representing the difference between predicted biological lung age and chronological age.
+2. **Disease-Specific Aging Signatures (DAS)** — characteristic aging patterns associated with different pulmonary diseases.
+3. **Regional Pulmonary Aging Maps (RPAM)** — interpretable spatial representations of localized pulmonary aging acceleration.
 
 ---
 
-## 3. Project Phases
+# 2. Research Question
 
-# Phase 1 — Data Engineering (COMPLETED / IN PROGRESS)
-### Goal: Build clean, usable dataset
+> Can biological lung age estimated from chest radiographs be used to detect, characterize, and interpret pulmonary disease more effectively than traditional classification-based approaches?
 
-### Tasks:
+---
+
+# 3. Core Hypothesis
+
+The APEX framework is based on the hypothesis that:
+
+> Pulmonary diseases manifest as measurable deviations from normal biological lung aging patterns.
+
+If this hypothesis is correct, diseased patients should exhibit significantly different Pulmonary Age Gaps compared to healthy individuals, and different diseases should produce distinct aging signatures.
+
+---
+
+# 4. Project Status
+
+Current Development Stage:
+
+✅ Dataset Construction Completed
+
+✅ Baseline Model Completed
+
+✅ APEXv1 Completed
+
+✅ APEXv2 Completed
+
+✅ Pulmonary Age Prediction Achieved
+
+✅ Test MAE Reduced from 20.62 Years (APEXv1) to ~4 Years (APEXv2)
+
+🔄 PAG Analysis In Progress
+
+🔄 Disease Characterization In Progress
+
+⬜ RPAM Development Not Started
+
+⬜ Cross-Dataset Validation Not Started
+
+⬜ Research Paper Not Started
+
+---
+
+# 5. Project Phases
+
+## Phase 1 — Data Engineering
+### Status: COMPLETED
+
+### Objective
+Construct a clean and verified NIH ChestX-ray14 dataset for modeling.
+
+### Completed Tasks
+
 - [x] Download NIH ChestX-ray14 metadata
-- [x] Extract partial image archives
-- [x] Build image index (metadata ↔ files)
-- [x] Verify dataset integrity (24,999 images matched)
+- [x] Extract image archives
+- [x] Build metadata-image mapping pipeline
+- [x] Verify dataset integrity
+- [x] Match 24,999 valid chest radiographs
+- [x] Create image availability index
 
-### Outputs:
+### Deliverables
+
 - `available_images.csv`
-- `healthy.csv`
-- Verified image directory structure
+- Metadata-image lookup system
+- Verified image dataset
 
 ---
 
-# Phase 2 — Dataset Construction (COMPLETED / IN PROGRESS)
-### Goal: Create modeling-ready dataset
+## Phase 2 — Dataset Construction
+### Status: COMPLETED
 
-### Tasks:
-- Filter healthy (“No Finding”) images
-- Remove missing or corrupted samples
-- Extract patient age labels
-- Create train/validation/test splits (70/15/15)
-- Analyze age distribution bias
+### Objective
+Create a modeling-ready healthy cohort for pulmonary aging prediction.
 
-### Outputs:
+### Completed Tasks
+
+- [x] Identify healthy ("No Finding") patients
+- [x] Extract age labels
+- [x] Remove invalid records
+- [x] Create train/validation/test splits
+- [x] Analyze age distributions
+
+### Deliverables
+
 - `healthy_train.csv`
 - `healthy_val.csv`
 - `healthy_test.csv`
-- Age distribution plots
+- Dataset statistics
 
 ---
 
-# Phase 3 — Baseline Model (Lung Age Prediction) (COMPLETED / IN PROGRESS)
-### Goal: Learn normal pulmonary aging
+## Phase 3 — APEXv1 Baseline Lung Age Model
+### Status: COMPLETED
 
-### Model:
-- CNN (ResNet18 or EfficientNet)
-- Input: Chest X-ray image
-- Output: Predicted lung age
+### Objective
+Establish the first pulmonary age prediction baseline.
 
-### Training:
-- Loss: MAE (Mean Absolute Error)
-- Optimizer: Adam
-- Pretrained ImageNet backbone
+### Architecture
 
-### Outputs:
-- Trained lung age model
-- Predicted vs actual age plot
-- Performance metrics (MAE, RMSE, R²)
+- CNN-based age predictor
+- Chest X-ray input
+- Age regression output
+
+### Results
+
+- Test MAE: 20.62 Years
+
+### Outcome
+
+Successfully demonstrated feasibility of pulmonary age estimation but required significant optimization.
+
+### Deliverables
+
+- APEXv1 model
+- Training pipeline
+- Initial evaluation framework
 
 ---
 
-# Phase 4 — Pulmonary Age Gap (PAG) (COMPLETED / IN PROGRESS)
-### Goal: Quantify disease-related aging
+## Phase 4 — APEXv2 Enhanced Pulmonary Aging Model
+### Status: COMPLETED
 
-### Formula:
+### Objective
+Improve biological lung age prediction performance.
+
+### Improvements
+
+- Enhanced preprocessing
+- Improved training strategy
+- Optimized architecture
+- Improved data utilization
+- Better generalization performance
+
+### Results
+
+- Test MAE ≈ 4 Years
+
+### Significance
+
+This result demonstrates that biological lung age can be estimated with substantially greater accuracy and provides a strong foundation for downstream disease characterization.
+
+### Deliverables
+
+- APEXv2 model
+- Final age prediction pipeline
+- Performance benchmarks
+- Predicted vs. actual age analysis
+
+---
+
+## Phase 5 — Pulmonary Age Gap (PAG) Validation
+### Status: IN PROGRESS
+
+### Objective
+
+Determine whether disease significantly alters biological lung age.
+
+### Definition
+
 PAG = Predicted Lung Age − Chronological Age
 
-### Tasks:
-- Compute PAG for all patients
-- Compare distributions across:
-  - Healthy
-  - Pneumonia
-  - Fibrosis
-  - COPD-related cases
-- Statistical significance testing
+### Research Questions
 
-### Outputs:
-- PAG distribution plots
-- Group comparison charts
-- Statistical test results
+- Do diseased patients exhibit larger PAG values?
+- Which diseases produce the greatest aging acceleration?
+- Is PAG a useful biomarker of pulmonary health?
 
----
+### Tasks
 
-# Phase 5 — Disease-Specific Aging Signatures (DAS)
-### Goal: Identify disease patterns in aging space
+- [ ] Compute PAG for all patients
+- [ ] Compute PAG for healthy cohort
+- [ ] Compute PAG for disease cohorts
+- [ ] Generate PAG distribution plots
+- [ ] Perform significance testing
+- [ ] Calculate effect sizes
+- [ ] Rank diseases by PAG
 
-### Tasks:
-- Compute mean and variance of PAG per disease
-- Cluster disease groups based on aging behavior
-- Measure similarity between diseases
+### Deliverables
 
-### Outputs:
-- Disease clustering visualization
-- Signature profiles per disease
-- Distance matrix between diseases
+- PAG dataset
+- PAG boxplots
+- Statistical analysis report
+- Disease comparison tables
 
 ---
 
-# Phase 6 — Regional Pulmonary Aging Maps (RPAM)
-### Goal: Localize disease effects in lungs
+## Phase 6 — Disease-Specific Aging Signatures (DAS)
+### Status: PLANNED
 
-### Tasks:
-- Divide X-ray into 6 regions:
-  - Upper L/R
-  - Middle L/R
-  - Lower L/R
-- Estimate regional age contributions
-- Generate heatmaps per image
+### Objective
 
-### Outputs:
+Discover unique aging signatures associated with different diseases.
+
+### Methodology
+
+Instead of using disease labels directly, APEX will analyze latent aging representations learned by the age prediction model.
+
+### Tasks
+
+- [ ] Extract learned feature embeddings
+- [ ] Perform PCA analysis
+- [ ] Perform UMAP visualization
+- [ ] Cluster disease groups
+- [ ] Compute disease similarity matrix
+- [ ] Identify unique disease aging signatures
+
+### Deliverables
+
+- Embedding visualizations
+- Disease clusters
+- Similarity heatmaps
+- Disease signature profiles
+
+---
+
+## Phase 7 — Baseline Disease Classification Comparison
+### Status: PLANNED
+
+### Objective
+
+Compare the APEX framework against traditional disease classification systems.
+
+### Tasks
+
+- [ ] Train baseline disease classifier
+- [ ] Train ResNet classifier
+- [ ] Compare against PAG-based methods
+- [ ] Evaluate interpretability differences
+
+### Metrics
+
+- Accuracy
+- Precision
+- Recall
+- F1 Score
+- ROC-AUC
+
+### Deliverables
+
+- Comparative performance report
+- ROC curves
+- Classification benchmarks
+
+---
+
+## Phase 8 — Model Reliability and Bias Analysis
+### Status: PLANNED
+
+### Objective
+
+Evaluate robustness and fairness of pulmonary age estimation.
+
+### Tasks
+
+- [ ] Analyze error by age group
+- [ ] Analyze error by sex
+- [ ] Analyze error by disease type
+- [ ] Identify potential biases
+- [ ] Evaluate uncertainty patterns
+
+### Deliverables
+
+- Reliability report
+- Bias analysis figures
+- Error breakdown charts
+
+---
+
+## Phase 9 — Regional Pulmonary Aging Maps (RPAM)
+### Status: PLANNED
+
+### Objective
+
+Localize biological aging acceleration within the lungs.
+
+### Tasks
+
+- [ ] Divide lungs into anatomical regions
+- [ ] Estimate regional age contributions
+- [ ] Generate aging heatmaps
+- [ ] Analyze disease localization patterns
+
+### Deliverables
+
 - RPAM heatmaps
-- Region-wise aging analysis
-- Disease localization patterns
+- Region-specific aging metrics
+- Localization analysis
 
 ---
 
-# Phase 7 — Cross-Dataset Validation (Advanced)
-### Goal: Test generalization
+## Phase 10 — Cross-Dataset Validation
+### Status: PLANNED
 
-### Tasks:
-- Train on NIH dataset
-- Test on external dataset (CheXpert or similar)
-- Compare performance degradation
+### Objective
 
-### Outputs:
-- Cross-dataset performance report
-- Robustness analysis
+Evaluate model generalization across institutions and datasets.
+
+### Tasks
+
+- [ ] Train using NIH ChestX-ray14
+- [ ] Evaluate on external datasets
+- [ ] Compare performance degradation
+- [ ] Measure robustness
+
+### Candidate Datasets
+
+- CheXpert
+- MIMIC-CXR
+- PadChest
+
+### Deliverables
+
+- Generalization report
+- Cross-dataset benchmarks
 
 ---
 
-# Phase 8 — Paper + Science Fair Submission
-### Goal: Final presentation
+## Phase 11 — Research Paper and Science Fair Submission
+### Status: PLANNED
 
-### Tasks:
-- Write full research paper
-- Create figures:
-  - Model architecture diagram
-  - PAG plots
-  - RPAM heatmaps
-  - Disease signature clustering
-- Prepare science fair poster
+### Objective
 
-### Outputs:
-- Final paper (IEEE/ISEF style)
+Prepare final scientific publication and competition materials.
+
+### Tasks
+
+- [ ] Write research paper
+- [ ] Create architecture diagrams
+- [ ] Generate publication-quality figures
+- [ ] Prepare poster
+- [ ] Prepare presentation
+
+### Deliverables
+
+- Research paper
+- Science fair poster
+- Presentation slides
 - GitHub repository
-- Presentation slides/poster
 
 ---
 
-## 4. Key Deliverables
+# 6. Novel Contributions
 
-### Core Scientific Contributions:
-1. **Pulmonary Age Gap (PAG)** — continuous lung health metric  
-2. **Disease-Specific Aging Signatures (DAS)** — disease pattern representation  
-3. **Regional Pulmonary Aging Maps (RPAM)** — spatial disease localization  
+The APEX framework seeks to contribute:
+
+### Contribution 1 — Pulmonary Age Gap (PAG)
+
+A continuous biological lung health biomarker derived from chest radiographs.
+
+### Contribution 2 — Disease-Specific Aging Signatures (DAS)
+
+A representation of disease through biological aging behavior rather than categorical classification.
+
+### Contribution 3 — Regional Pulmonary Aging Maps (RPAM)
+
+Spatial visualization of disease-related aging acceleration.
+
+### Contribution 4 — Aging-Based Disease Characterization Framework
+
+A new paradigm for pulmonary disease analysis based on biological aging dynamics.
 
 ---
 
-## 5. Success Criteria
+# 7. Success Criteria
 
-APEX is successful if it demonstrates:
+## Primary Success Metrics
 
-- Lung age can be predicted from chest X-rays with reasonable error
-- Disease increases Pulmonary Age Gap significantly
-- Different diseases show distinct aging signatures
-- Spatial patterns correspond to known lung pathology locations
+- [x] Pulmonary age prediction MAE ≤ 5 years
+- [ ] Significant PAG difference between healthy and diseased cohorts
+- [ ] Reproducible disease-specific aging patterns
+
+## Secondary Success Metrics
+
+- [ ] Distinct disease clustering in latent space
+- [ ] Improved interpretability compared to traditional classifiers
+
+## Exploratory Success Metrics
+
+- [ ] Successful RPAM localization
+- [ ] Cross-dataset generalization
 
 ---
 
-## 6. Tools & Stack
+# 8. Technology Stack
 
 - Python
-- PyTorch / TensorFlow (recommended PyTorch)
-- Pandas / NumPy
-- Matplotlib / Seaborn
-- Google Colab or local GPU
-- NIH ChestX-ray14 dataset
+- PyTorch
+- NumPy
+- Pandas
+- Matplotlib
+- Scikit-Learn
+- NIH ChestX-ray14
+- Google Colab
+- GitHub
 
 ---
 
-## 7. Timeline (Suggested)
+# 9. Current Project Summary
 
-### Week 1–2:
-- Dataset finalization
-- Healthy cohort construction
+APEX has successfully progressed from an initial proof-of-concept pulmonary age prediction model (APEXv1, MAE = 20.62 years) to a substantially improved biological lung age estimation system (APEXv2, MAE ≈ 4 years). The project has now entered the scientific validation stage, where the primary objective is to determine whether deviations in predicted lung age can serve as meaningful biomarkers of pulmonary disease.
 
-### Week 3:
-- Train lung age model
-
-### Week 4:
-- PAG + initial analysis
-
-### Week 5:
-- DAS + RPAM prototypes
-
-### Week 6:
-- Paper + science fair prep
-
----
-
-## 8. Notes
-
-APEX is not just a classification system. It is a framework for interpreting lung disease through **biological aging dynamics**, enabling more explainable and structured medical AI analysis.
+The next major milestone is validating the Pulmonary Age Gap (PAG) hypothesis and establishing whether biological lung aging patterns can reveal disease-specific characteristics that are not captured by traditional classification systems.
