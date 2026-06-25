@@ -76,7 +76,7 @@ Rather than predicting disease labels directly, APEX introduces:
 
 ---
 
-# Phase 4 — Pulmonary Age Gap (PAG)
+# Phase 4 — Pulmonary Age Gap (PAG) (COMPLETED / IN PROGRESS)
 ### Goal: Quantify disease-related aging
 
 ### Formula:
