@@ -169,7 +169,7 @@ This result demonstrates that biological lung age can be estimated with substant
 ---
 
 ## Phase 5 — Pulmonary Age Gap (PAG) Validation
-### Status: IN PROGRESS
+### Status: COMPLETED
 
 ### Objective
 
