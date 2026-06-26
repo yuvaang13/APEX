@@ -187,13 +187,15 @@ PAG = Predicted Lung Age − Chronological Age
 
 ### Tasks
 
-- [ ] Compute PAG for all patients
-- [ ] Compute PAG for healthy cohort
-- [ ] Compute PAG for disease cohorts
-- [ ] Generate PAG distribution plots
-- [ ] Perform significance testing
+### Tasks
+
+- [x] Compute PAG for all patients
+- [x] Compute PAG for healthy cohort
+- [x] Compute PAG for disease cohorts
+- [x] Generate PAG distribution plots
+- [x] Perform significance testing
 - [ ] Calculate effect sizes
-- [ ] Rank diseases by PAG
+- [x] Rank diseases by PAG
 
 ### Deliverables
 
