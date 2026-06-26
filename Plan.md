@@ -181,9 +181,9 @@ PAG = Predicted Lung Age − Chronological Age
 
 ### Research Questions
 
-- Do diseased patients exhibit larger PAG values?
-- Which diseases produce the greatest aging acceleration?
-- Is PAG a useful biomarker of pulmonary health?
+- Does PAG differ significantly between healthy and diseased patients?
+- Which diseases exhibit the largest PAG deviations?
+- Is PAG a useful biomarker of pulmonary health after accounting for model calibration?
 
 ### Tasks
 
@@ -194,7 +194,7 @@ PAG = Predicted Lung Age − Chronological Age
 - [x] Compute PAG for disease cohorts
 - [x] Generate PAG distribution plots
 - [x] Perform significance testing
-- [ ] Calculate effect sizes
+- [x] Calculate effect sizes
 - [x] Rank diseases by PAG
 
 ### Deliverables
