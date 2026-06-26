@@ -207,7 +207,7 @@ PAG = Predicted Lung Age − Chronological Age
 ---                  
 
 ## Phase 6 — PAG Calibration and Validation
-### Status: PLANNED
+### Status: COMPLETED
 
 ### Objective
 
@@ -219,12 +219,12 @@ Phase 5 demonstrated a statistically significant difference in PAG between healt
 
 ### Tasks
 
-- [ ] Quantify systematic prediction bias
-- [ ] Perform age-stratified PAG analysis
-- [ ] Evaluate calibration across age groups
-- [ ] Apply regression-based calibration if appropriate
-- [ ] Recompute PAG after calibration
-- [ ] Compare calibrated and uncalibrated results
+- [x] Quantify systematic prediction bias
+- [x] Perform age-stratified PAG analysis
+- [x] Evaluate calibration across age groups
+- [x] Apply regression-based calibration if appropriate
+- [x] Recompute PAG after calibration
+- [x] Compare calibrated and uncalibrated results
 
 ### Deliverables
 
