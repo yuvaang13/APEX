@@ -204,9 +204,36 @@ PAG = Predicted Lung Age − Chronological Age
 - Statistical analysis report
 - Disease comparison tables
 
----
+---                  
 
-## Phase 6 — Disease-Specific Aging Signatures (DAS)
+## Phase 6 — PAG Calibration and Validation
+### Status: PLANNED
+
+### Objective
+
+Evaluate and calibrate Pulmonary Age Gap to ensure that observed differences reflect pulmonary aging rather than systematic prediction bias.
+
+### Motivation
+
+Phase 5 demonstrated a statistically significant difference in PAG between healthy and diseased cohorts. However, the model underpredicted chronological age by approximately 3.3 years on average, and the diseased cohort was older than the healthy cohort. This phase aims to quantify and reduce these effects.
+
+### Tasks
+
+- [ ] Quantify systematic prediction bias
+- [ ] Perform age-stratified PAG analysis
+- [ ] Evaluate calibration across age groups
+- [ ] Apply regression-based calibration if appropriate
+- [ ] Recompute PAG after calibration
+- [ ] Compare calibrated and uncalibrated results
+
+### Deliverables
+
+- Calibration curves
+- Age-stratified PAG analysis
+- Bias report
+- Calibrated PAG dataset
+
+## Phase 7 — Disease-Specific Aging Signatures (DAS)
 ### Status: PLANNED
 
 ### Objective
@@ -235,7 +262,7 @@ Instead of using disease labels directly, APEX will analyze latent aging represe
 
 ---
 
-## Phase 7 — Baseline Disease Classification Comparison
+## Phase 8 — Baseline Disease Classification Comparison
 ### Status: PLANNED
 
 ### Objective
@@ -265,7 +292,7 @@ Compare the APEX framework against traditional disease classification systems.
 
 ---
 
-## Phase 8 — Model Reliability and Bias Analysis
+## Phase 9 — Model Reliability and Bias Analysis
 ### Status: PLANNED
 
 ### Objective
@@ -288,7 +315,7 @@ Evaluate robustness and fairness of pulmonary age estimation.
 
 ---
 
-## Phase 9 — Regional Pulmonary Aging Maps (RPAM)
+## Phase 10 — Regional Pulmonary Aging Maps (RPAM)
 ### Status: PLANNED
 
 ### Objective
@@ -310,7 +337,7 @@ Localize biological aging acceleration within the lungs.
 
 ---
 
-## Phase 10 — Cross-Dataset Validation
+## Phase 11 — Cross-Dataset Validation
 ### Status: PLANNED
 
 ### Objective
@@ -337,7 +364,7 @@ Evaluate model generalization across institutions and datasets.
 
 ---
 
-## Phase 11 — Research Paper and Science Fair Submission
+## Phase 12 — Research Paper and Science Fair Submission
 ### Status: PLANNED
 
 ### Objective
@@ -361,7 +388,7 @@ Prepare final scientific publication and competition materials.
 
 ---
 
-# 6. Novel Contributions
+# 13. Novel Contributions
 
 The APEX framework seeks to contribute:
 
@@ -383,7 +410,7 @@ A new paradigm for pulmonary disease analysis based on biological aging dynamics
 
 ---
 
-# 7. Success Criteria
+# 14. Success Criteria
 
 ## Primary Success Metrics
 
@@ -403,7 +430,7 @@ A new paradigm for pulmonary disease analysis based on biological aging dynamics
 
 ---
 
-# 8. Technology Stack
+# 15. Technology Stack
 
 - Python
 - PyTorch
@@ -417,7 +444,7 @@ A new paradigm for pulmonary disease analysis based on biological aging dynamics
 
 ---
 
-# 9. Current Project Summary
+# 16. Current Project Summary
 
 APEX has successfully progressed from an initial proof-of-concept pulmonary age prediction model (APEXv1, MAE = 20.62 years) to a substantially improved biological lung age estimation system (APEXv2, MAE ≈ 4 years). The project has now entered the scientific validation stage, where the primary objective is to determine whether deviations in predicted lung age can serve as meaningful biomarkers of pulmonary disease.
 
