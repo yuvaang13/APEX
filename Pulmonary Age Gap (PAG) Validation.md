@@ -137,7 +137,8 @@ plt.title("Disease vs Pulmonary Age Gap (PAG)")
 plt.tight_layout()
 plt.show()
 
-FIGURE 1 PLACEHOLDER: Disease vs PAG Bar Chart
+<img width="866" height="587" alt="Screenshot 2026-06-25 at 8 07 44 PM" src="https://github.com/user-attachments/assets/94c795c1-b33a-4b95-974e-3ac8cb12571a" />
+
 
 Improved version:
 
@@ -148,7 +149,7 @@ plt.title("Disease vs Pulmonary Age Gap (PAG)")
 plt.tight_layout()
 plt.show()
 
-FIGURE 2 PLACEHOLDER: Horizontal Ranking Plot
+<img width="884" height="519" alt="Screenshot 2026-06-25 at 8 08 13 PM" src="https://github.com/user-attachments/assets/57efff51-69b7-4808-ab08-3892dfea033d" />
 
 ---
 
