@@ -180,4 +180,4 @@ disease deviation mapping and clinical extension of PAG.
 
 NIH X-ray → preprocessing → DenseNet121 → score → normalization → PAG → analysis
 
----<img width="643" height="436" alt="Screenshot 2026-06-26 at 3 54 27 PM" src="https://github.com/user-attachments/assets/31c096b5-424d-451f-91af-4fafadee30b8" />
+---
