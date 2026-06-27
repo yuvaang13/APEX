@@ -337,7 +337,65 @@ Localize biological aging acceleration within the lungs.
 
 ---
 
-## Phase 11 — Cross-Dataset Validation
+---
+
+## Phase 11 — APEXv3 Unified Pulmonary Foundation Model
+### Status: PLANNED
+
+### Objective
+
+Develop the next-generation APEX model by integrating all validated components of the framework into a single unified deep learning system.
+
+Unlike previous versions, which focused on individual research objectives (lung age prediction, Pulmonary Age Gap, Disease-Specific Aging Signatures, and Regional Pulmonary Aging Maps), APEXv3 will jointly learn these representations through a shared backbone trained on the largest available collection of chest radiographs.
+
+The goal is to create a comprehensive pulmonary foundation model capable of simultaneously estimating biological lung age, characterizing disease-specific aging behavior, localizing abnormal pulmonary aging, and producing interpretable biomarkers within a single inference pipeline.
+
+### Planned Improvements
+
+- Train using the maximum available NIH ChestX-ray14 dataset
+- Incorporate healthy and diseased cohorts during training
+- Improve biological lung age estimation accuracy
+- Learn disease-aware pulmonary aging representations
+- Integrate Pulmonary Age Gap (PAG) prediction
+- Integrate Disease-Specific Aging Signatures (DAS)
+- Integrate Regional Pulmonary Aging Maps (RPAM)
+- Improve feature representation through larger-scale training
+- Optimize model robustness and generalization
+- Develop an end-to-end pulmonary aging framework
+
+### Proposed Architecture
+
+```
+Chest X-ray
+      ↓
+Shared DenseNet Backbone
+      ↓
+Shared Latent Pulmonary Representation
+      ├──────────────► Lung Age Prediction
+      ├──────────────► Pulmonary Age Gap (PAG)
+      ├──────────────► Disease-Specific Aging Signatures (DAS)
+      ├──────────────► Regional Pulmonary Aging Maps (RPAM)
+      └──────────────► Explainability & Visualization
+```
+
+### Research Goals
+
+- Improve pulmonary age estimation beyond APEXv2
+- Increase separation between healthy and diseased pulmonary aging
+- Learn richer latent pulmonary representations
+- Improve disease characterization without relying solely on classification
+- Produce a unified pulmonary aging framework suitable for downstream research and clinical validation
+
+### Deliverables
+
+- APEXv3 unified model
+- End-to-end inference pipeline
+- Multi-task training framework
+- Comprehensive performance evaluation
+- Unified pulmonary aging benchmark
+- Final GitHub release
+
+## Phase 12 — Cross-Dataset Validation
 ### Status: PLANNED
 
 ### Objective
@@ -364,7 +422,7 @@ Evaluate model generalization across institutions and datasets.
 
 ---
 
-## Phase 12 — Research Paper and Science Fair Submission
+## Phase 13 — Research Paper and Science Fair Submission
 ### Status: PLANNED
 
 ### Objective
@@ -388,7 +446,7 @@ Prepare final scientific publication and competition materials.
 
 ---
 
-# 13. Novel Contributions
+# 14. Novel Contributions
 
 The APEX framework seeks to contribute:
 
@@ -410,7 +468,7 @@ A new paradigm for pulmonary disease analysis based on biological aging dynamics
 
 ---
 
-# 14. Success Criteria
+# 15. Success Criteria
 
 ## Primary Success Metrics
 
@@ -430,7 +488,7 @@ A new paradigm for pulmonary disease analysis based on biological aging dynamics
 
 ---
 
-# 15. Technology Stack
+# 16. Technology Stack
 
 - Python
 - PyTorch
@@ -444,7 +502,7 @@ A new paradigm for pulmonary disease analysis based on biological aging dynamics
 
 ---
 
-# 16. Current Project Summary
+# 17. Current Project Summary
 
 APEX has successfully progressed from an initial proof-of-concept pulmonary age prediction model (APEXv1, MAE = 20.62 years) to a substantially improved biological lung age estimation system (APEXv2, MAE ≈ 4 years). The project has now entered the scientific validation stage, where the primary objective is to determine whether deviations in predicted lung age can serve as meaningful biomarkers of pulmonary disease.
 
