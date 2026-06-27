@@ -339,7 +339,7 @@ Localize biological aging acceleration within the lungs.
 
 ---
 
-## Phase 11 — APEXv3 Unified Pulmonary Foundation Model
+## Phase 11 — APEX-vMax Unified Pulmonary Foundation Model
 ### Status: PLANNED
 
 ### Objective
