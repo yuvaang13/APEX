@@ -233,6 +233,55 @@ Phase 5 demonstrated a statistically significant difference in PAG between healt
 - Bias report
 - Calibrated PAG dataset
 
+# Phase 6.5 — APEX v2.5 Pulmonary Representation & PAG Redesign (CRITICAL UPGRADE)
+
+## Status
+COMPLETED (DESIGN) / IN PROGRESS (IMPLEMENTATION)
+
+## Objective
+Upgrade APEXv2 to learn a joint pulmonary aging representation space by modifying DenseNet121 to output both a predicted age and a latent embedding vector. This enables meaningful disease separation and improves the Pulmonary Age Gap (PAG) framework by moving from scalar-only analysis to embedding-space analysis.
+
+## Motivation
+Phase 6 showed that APEXv2 produces stable age predictions and a well-behaved healthy PAG distribution, but diseased and healthy populations show minimal separation. This indicates that scalar age prediction alone does not capture disease-related pulmonary structure, and that meaningful signal likely exists in the latent embedding space.
+
+## Key Hypothesis
+Pulmonary disease is better represented as a deviation in learned embedding space rather than a scalar shift in predicted age. Therefore, APEX must explicitly expose and utilize its internal feature representation.
+
+## Model Change (APEXv2.5)
+DenseNet121 is modified to output two signals:
+- Predicted Pulmonary Age (regression head)
+- 1024-dimensional embedding vector (global feature representation before regression)
+
+## Loss Function
+Primary training objective remains:
+Loss = MAE(Age Prediction)
+
+Optional future extension:
+Loss = MAE + λ * embedding regularization
+
+## New PAG Definition
+Scalar PAG:
+PAG_scalar = Predicted Age − Chronological Age
+
+Embedding PAG:
+PAG_embedding = distance(embedding, healthy_centroid)
+(using cosine or Euclidean distance)
+
+## Data Stored Per Sample
+image_id, patient_id, chronological_age, predicted_age, scalar_PAG, embedding_vector, disease_label
+
+## Expected Improvements
+- Stronger disease separation in embedding space
+- Meaningful clustering of pulmonary diseases
+- Interpretable pulmonary aging manifold
+- Improved foundation for Phase 7 DAS analysis
+
+## Transition to Phase 7
+This phase enables Phase 7 by providing a structured embedding space, a healthy centroid baseline, and a deviation-based metric (embedding PAG), allowing analysis of disease-specific aging signatures, clustering structure, and latent pulmonary geometry.
+
+## Summary
+APEX v2.5 upgrades the system from a scalar regression model into a dual-output representation learning framework, forming the necessary foundation for meaningful disease structure discovery.
+
 ## Phase 7 — Disease-Specific Aging Signatures (DAS)
 ### Status: PLANNED
 
