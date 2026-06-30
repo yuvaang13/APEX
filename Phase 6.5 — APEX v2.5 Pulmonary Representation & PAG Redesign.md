@@ -1,128 +1,215 @@
 # APEX v2.5 — AI-Powered Estimation of Pulmonary Extended Aging for Early Detection of Lung Disease
 
----
-
 # Abstract
+APEX v2.5 is a deep learning framework designed to estimate pulmonary biological age from chest radiographs using a DenseNet121-based regression architecture trained on the NIH ChestX-ray14 dataset. Instead of performing direct disease classification, the system models pulmonary health as a continuous biological aging process. The key output is the Pulmonary Age Gap (PAG), defined as the difference between predicted pulmonary age and chronological age. APEX v2.5 additionally learns a high-dimensional 1024-feature embedding space that encodes latent pulmonary structure for downstream representation learning, clustering, and disease separation analysis. The framework is designed to support both quantitative biomarker extraction and unsupervised discovery of disease structure in latent space.
 
-APEX v2.5 is a deep learning framework designed to model pulmonary aging as a continuous biological signal extracted from chest radiographs. Instead of directly classifying disease presence, the system learns a regression mapping from chest X-rays to an estimated pulmonary biological age. This enables the derivation of a clinically interpretable biomarker: the Pulmonary Age Gap (PAG), defined as the difference between predicted pulmonary age and chronological age.
-
-Unlike conventional classification-based radiology models, APEX v2.5 focuses on representation learning and aging dynamics. The model produces both (1) a scalar age prediction used to compute PAG and (2) a high-dimensional embedding (1024-D) representing latent pulmonary structure. This dual-output design enables downstream analysis including disease clustering, manifold learning, and visualization of pulmonary aging trajectories.
+![FIGURE 1 — APEX v2.5 End-to-End System Overview](INSERT_IMAGE_HERE)
 
 ---
 
 # 1. Introduction
+Pulmonary diseases such as pneumonia, fibrosis, emphysema, pleural effusion, consolidation, and nodular abnormalities evolve gradually over time and often exhibit subtle radiographic changes that are not easily captured by traditional classification-based machine learning systems. These models typically rely on discrete labels and fail to represent the continuous nature of disease progression. APEX v2.5 addresses this limitation by reframing pulmonary disease analysis as a continuous aging estimation problem.
 
-Pulmonary diseases such as fibrosis, emphysema, pneumonia, and chronic obstructive conditions often develop gradually over long time horizons. In many cases, early pathological changes are subtle and not easily separable using binary classification models trained on radiographs.
+The central hypothesis is that healthy lungs follow a smooth, low-dimensional biological aging manifold within radiographic feature space. Disease states introduce structured deviations from this manifold, manifesting as accelerated or distorted pulmonary aging patterns. By learning this manifold through regression on chronological age, APEX enables disease characterization through deviation analysis rather than classification.
 
-APEX v2.5 reframes this problem by introducing the hypothesis that pulmonary disease manifests as a deviation from normal biological aging patterns observable in chest X-rays. Instead of learning discrete disease labels, the model learns a continuous aging function over pulmonary structure.
-
-Formally, we assume:
-
-- Healthy lungs follow a smooth aging manifold in imaging space
-- Disease introduces systematic deviations from this manifold
-- These deviations can be quantified via a learned age predictor
-
-Thus, pulmonary disease detection becomes an **outlier detection problem in biological aging space**, rather than a direct classification task.
+This formulation provides three key advantages: (1) continuous biomarkers instead of binary outputs, (2) emergent disease structure in embedding space without explicit supervision, and (3) improved interpretability through a biologically meaningful scalar metric (PAG).
 
 ---
 
 # 2. Dataset Construction
 
-## 2.1 Data Source
+The dataset used in APEX v2.5 is derived from the NIH ChestX-ray14 dataset, which contains approximately 75,000 frontal chest radiographs collected from multiple clinical institutions. Each sample includes a chest X-ray image, patient identifier, age annotation, and multi-label disease tags.
 
-The dataset used in APEX v2.5 is derived from the NIH ChestX-ray14 dataset, which contains chest radiographs collected from hospital systems with corresponding metadata.
+## 2.1 Data Filtering
+The dataset undergoes strict preprocessing to ensure consistency and reliability. Samples are removed if:
+- the image file is missing or corrupted
+- the age metadata is absent or invalid
+- the file path cannot be resolved across image folders (images_001 to images_012)
 
-Key properties:
-- ~75,000 frontal chest X-rays
-- 12 image archives (images_001 through images_012)
-- Multi-label disease annotations
-- Patient-level identifiers
-- Age metadata (critical for regression task)
+After filtering, the dataset consists of a cleaned subset suitable for supervised regression learning.
 
----
+## 2.2 Cohort Definition
+Two cohorts are defined:
 
-## 2.2 Data Filtering
+- Healthy cohort: images labeled “No Finding”
+- Diseased cohort: all remaining diagnostic labels
 
-To ensure consistency in biological age modeling, the dataset is filtered as follows:
+The healthy cohort is exclusively used for learning baseline pulmonary aging behavior, while diseased samples are reserved for evaluation and downstream analysis.
 
-### Inclusion criteria:
-- Valid frontal chest X-ray image
-- Available age metadata
-- Successfully matched image file path
+## 2.3 Dataset Split Strategy
+Splitting is performed at the patient level to prevent data leakage:
 
-### Exclusion criteria:
-- Missing or corrupted image files
-- Missing age labels
-- Unresolvable metadata entries
+- Training set: 70%
+- Validation set: 15%
+- Test set: 15%
 
-This yields a cleaned dataset suitable for supervised regression.
-
----
-
-## 2.3 Cohort Definition
-
-The dataset is implicitly divided into:
-
-### Healthy cohort
-- Label: “No Finding”
-- Used to learn baseline pulmonary aging structure
-
-### Diseased cohort
-- All remaining diagnostic labels
-- Used only in downstream evaluation (not training)
-
-This ensures that the model learns **natural aging patterns only**, avoiding direct disease supervision bias.
-
----
-
-## 2.4 Train / Validation / Test Split
-
-Patient-level splitting is enforced to prevent data leakage.
-
-| Split | Percentage | Purpose |
-|------|------------|--------|
-| Train | 70% | Model optimization |
-| Validation | 15% | Hyperparameter tuning |
-| Test | 15% | Final evaluation |
+This ensures that no patient appears in multiple splits, preserving generalization validity.
 
 ---
 
 # 3. Preprocessing Pipeline
 
-Each chest X-ray undergoes a standardized preprocessing pipeline:
+Each chest X-ray is processed using a standardized pipeline:
 
-1. Image loading (PNG format)
-2. RGB conversion (even if grayscale source)
-3. Resizing to 224 × 224
-4. Intensity normalization using ImageNet statistics:
-   - mean = [0.485, 0.456, 0.406]
-   - std = [0.229, 0.224, 0.225]
-5. Tensor conversion
+1. Image loading from PNG format
+2. Conversion to RGB channels (grayscale replicated to 3 channels if needed)
+3. Resizing to 224 × 224 pixels
+4. Normalization using ImageNet statistics:
+   - mean = (0.485, 0.456, 0.406)
+   - std = (0.229, 0.224, 0.225)
+5. Conversion to PyTorch tensor
 
-### Data augmentation (training only):
+## 3.1 Data Augmentation (Training Only)
+To improve robustness and generalization, augmentation is applied during training:
 - Random horizontal flip (p = 0.5)
-- Small rotation (±5 degrees)
-- Brightness/contrast jitter
+- Random rotation (±5 degrees)
+- Brightness jitter (±10%)
+- Contrast jitter (±10%)
 
-These augmentations simulate inter-scanner variability while preserving anatomical structure.
+These augmentations simulate variation across imaging devices, hospital environments, and acquisition protocols while preserving anatomical structure.
 
 ---
 
 # 4. Model Architecture (APEX v2.5)
 
-## 4.1 Backbone Network
+APEX v2.5 uses DenseNet121 pretrained on ImageNet as the backbone feature extractor. DenseNet is selected due to dense connectivity, improved gradient flow, and strong performance in medical imaging tasks.
 
-APEX v2.5 uses DenseNet121 pretrained on ImageNet as the feature extractor.
+## 4.1 Feature Extraction
+The backbone produces a 1024-dimensional embedding through global average pooling over convolutional feature maps:
 
-Rationale:
-- Dense connectivity improves gradient flow
-- Proven performance in medical imaging tasks
-- Efficient feature reuse for radiographic structures
+Input → DenseNet121 → Feature Maps → Global Average Pooling → 1024-D Embedding
 
-The backbone outputs a 1024-dimensional feature tensor.
+This embedding represents latent pulmonary structure including texture, vascular patterns, anatomical variation, and disease-related distortions learned implicitly through age regression.
+
+## 4.2 Regression Head
+The embedding is passed through a fully connected regression head:
+
+1024 → 512 → ReLU → Dropout(0.3) → 1
+
+This design balances model capacity and regularization:
+- 512 hidden units provide nonlinear transformation capacity
+- ReLU introduces non-linearity
+- Dropout prevents overfitting
+- Final layer outputs scalar pulmonary age
+
+## 4.3 Loss Function
+The model is trained using Mean Absolute Error (MAE):
+
+L = |y_true − y_pred|
+
+MAE is chosen for robustness to noisy age labels and stability during optimization.
+
+## 4.4 Optimization
+Optimization uses AdamW with:
+- learning rate = 1e-4
+- weight decay = 1e-4
+- ReduceLROnPlateau scheduling based on validation loss
 
 ---
 
-## 4.2 Feature Embedding Layer
+# 5. Pulmonary Age Gap (PAG)
 
-After DenseNet feature extraction:
+PAG is defined as:
+
+PAG = predicted pulmonary age − chronological age
+
+Interpretation:
+- PAG > 0 → accelerated pulmonary aging
+- PAG ≈ 0 → normal pulmonary aging
+- PAG < 0 → younger-than-expected pulmonary structure
+
+PAG acts as a continuous biomarker of pulmonary health and is hypothesized to correlate with disease burden.
+
+---
+
+# 6. Training Procedure
+
+Training proceeds as follows:
+
+1. Load batch of chest X-rays
+2. Forward pass through DenseNet121 backbone
+3. Extract 1024-dimensional embedding
+4. Pass embedding through regression head
+5. Compute MAE loss against chronological age
+6. Backpropagation using AdamW
+7. Update model parameters
+8. Validate on held-out validation set
+
+Best model selection is based on lowest validation MAE.
+
+---
+
+# 7. Outputs
+
+APEX v2.5 produces three outputs:
+- Predicted pulmonary age (scalar)
+- Pulmonary Age Gap (PAG)
+- 1024-dimensional embedding vector
+
+---
+
+# 8. Results
+
+## 8.1 Training Dynamics
+During training, the model is expected to show rapid initial convergence followed by gradual stabilization of validation loss, indicating successful learning of pulmonary aging structure.
+
+![FIGURE 2 — Training and Validation Loss Curves](INSERT_IMAGE_HERE)
+
+## 8.2 Pulmonary Age Gap Distribution
+The PAG distribution is expected to approximate a centered distribution in healthy cohorts with increased variance in diseased cohorts.
+
+---
+
+# 9. Model Checkpointing
+The best-performing model is saved as:
+
+APEXv2.5_best.pth
+
+This checkpoint includes:
+- model weights
+- optimizer state
+- epoch number
+- validation loss
+
+---
+
+# 10. Phase 7 Embedding Utility
+
+The 1024-dimensional embeddings form the basis for Phase 7 analysis and are used for:
+- PCA dimensionality reduction
+- UMAP manifold visualization
+- clustering of disease phenotypes
+- cosine similarity analysis
+- centroid-based disease separation
+
+These embeddings enable unsupervised discovery of disease structure in pulmonary aging space.
+
+---
+
+# 11. Discussion
+
+APEX v2.5 reframes pulmonary disease analysis as continuous representation learning over a biological aging manifold. Instead of discrete classification, it enables emergent structure discovery in latent space. The dual-output design (PAG + embeddings) provides both interpretable scalar biomarkers and high-dimensional structural representations.
+
+---
+
+# 12. Limitations
+
+Current limitations include:
+- dataset bias across imaging institutions
+- noisy and discretized age labels
+- absence of longitudinal patient tracking
+- single imaging modality (X-ray only)
+- no explicit disease supervision during training
+- limited external validation at training stage
+
+---
+
+# 13. Conclusion
+
+APEX v2.5 provides a unified framework for pulmonary aging estimation and latent representation learning. It produces a clinically meaningful biomarker (PAG), a structured embedding space, and a scalable foundation for Phase 7 disease clustering and manifold analysis.
+
+---
+
+# 14. Future Work
+
+Future directions include Phase 7 embedding clustering, external validation on CheXpert and MIMIC-CXR datasets, cross-institution calibration of PAG distributions, self-supervised pretraining to improve representation robustness, and temporal modeling of pulmonary aging trajectories over time.
