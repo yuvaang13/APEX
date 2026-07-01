@@ -3,7 +3,8 @@
 # Abstract
 APEX v2.5 is a deep learning framework designed to estimate pulmonary biological age from chest radiographs using a DenseNet121-based regression architecture trained on the NIH ChestX-ray14 dataset. Instead of performing direct disease classification, the system models pulmonary health as a continuous biological aging process. The key output is the Pulmonary Age Gap (PAG), defined as the difference between predicted pulmonary age and chronological age. APEX v2.5 additionally learns a high-dimensional 1024-feature embedding space that encodes latent pulmonary structure for downstream representation learning, clustering, and disease separation analysis. The framework is designed to support both quantitative biomarker extraction and unsupervised discovery of disease structure in latent space.
 
-![FIGURE 1 — APEX v2.5 End-to-End System Overview](INSERT_IMAGE_HERE)
+<img width="581" height="375" alt="Screenshot 2026-06-30 at 10 52 40 PM" src="https://github.com/user-attachments/assets/acd31120-7730-4671-908b-28461e0eb317" />
+
 
 ---
 
@@ -153,7 +154,8 @@ APEX v2.5 produces three outputs:
 ## 8.1 Training Dynamics
 During training, the model is expected to show rapid initial convergence followed by gradual stabilization of validation loss, indicating successful learning of pulmonary aging structure.
 
-![FIGURE 2 — Training and Validation Loss Curves](INSERT_IMAGE_HERE)
+<img width="588" height="440" alt="Screenshot 2026-06-30 at 10 51 57 PM" src="https://github.com/user-attachments/assets/9009a63d-451e-4e2a-aa94-da2fc9187247" />
+
 
 ## 8.2 Pulmonary Age Gap Distribution
 The PAG distribution is expected to approximate a centered distribution in healthy cohorts with increased variance in diseased cohorts.
@@ -213,3 +215,8 @@ APEX v2.5 provides a unified framework for pulmonary aging estimation and latent
 # 14. Future Work
 
 Future directions include Phase 7 embedding clustering, external validation on CheXpert and MIMIC-CXR datasets, cross-institution calibration of PAG distributions, self-supervised pretraining to improve representation robustness, and temporal modeling of pulmonary aging trajectories over time.
+
+# 15. Notes
+Best Val Loss: 4.3557022738894196               
+Mean PAG: 0.08015361                 
+Std PAG: 5.7669187                  
