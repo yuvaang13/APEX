@@ -233,10 +233,9 @@ Phase 5 demonstrated a statistically significant difference in PAG between healt
 - Bias report
 - Calibrated PAG dataset
 
-# Phase 6.5 — APEX v2.5 Pulmonary Representation & PAG Redesign (CRITICAL UPGRADE)
+## Phase 6.5 — APEX v2.5 Pulmonary Representation & PAG Redesign (CRITICAL UPGRADE)
 
-## Status
-COMPLETED (DESIGN) / IN PROGRESS (IMPLEMENTATION)
+### Status: COMPLETED
 
 ## Objective
 Upgrade APEXv2 to learn a joint pulmonary aging representation space by modifying DenseNet121 to output both a predicted age and a latent embedding vector. This enables meaningful disease separation and improves the Pulmonary Age Gap (PAG) framework by moving from scalar-only analysis to embedding-space analysis.
